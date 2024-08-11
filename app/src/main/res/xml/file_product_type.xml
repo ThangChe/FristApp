@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item>
+        <id>1</id>
+        <name>Laptop</name>
+        <image>
+            https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-HC-Tra-Gop-800-300.png
+        </image>
+    </item>
+    <item>
+        <id>2</id>
+        <name>Phone</name>
+        <image>
+            https://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/banner-HC-Tra-Gop-800-300.png
+        </image>
+    </item>
+</resources>

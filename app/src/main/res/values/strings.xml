@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FirstApp</string>
+    <string name="email">Email</string>
+    <string name="please_input_email">Please input email…</string>
+    <string name="login">Login</string>
+    <string name="forget_password">Forget Password</string>
+    <string name="register_new_a_account">Register new a account</string>
+</resources>
