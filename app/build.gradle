@@ -52,7 +52,7 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.0-M2'
     androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
-    androidTestImplementation 'junit:junit:4.12'
+    androidTestImplementation 'junit:junit:4.13.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.0-M2'
     //MocKK
     testImplementation 'io.mockk:mockk:1.13.12'
@@ -62,4 +62,15 @@ dependencies {
 
 //    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
 //    implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0' // Hoặc phiên bản mới nhất
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0' // Hoặc phiên bản mới nhất
+
+    // RxJava
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.5' // Hoặc phiên bản mới nhất
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2' // Hoặc phiên bản mới nhất
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0' // Hoặc phiên bản mới nhất
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.14.9'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.6.0'
 }

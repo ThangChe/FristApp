@@ -1,22 +1,8 @@
 package com.thangtien.firstapp.activity;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
-import android.app.SearchManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,23 +12,42 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.thangtien.firstapp.R;
+import com.thangtien.firstapp.adapter.ObjectDataAdapter;
 import com.thangtien.firstapp.adapter.ProductTypeAdapter;
 import com.thangtien.firstapp.adapter.WifiListAdapter;
+import com.thangtien.firstapp.model.ObjectData;
 import com.thangtien.firstapp.model.ProductType;
+import com.thangtien.firstapp.services.ApiService;
+import com.thangtien.firstapp.services.MemoryCheckService;
 import com.thangtien.firstapp.ultil.Constants;
 import com.thangtien.firstapp.ultil.FileUtil;
-import com.thangtien.firstapp.services.MemoryCheckService;
 import com.thangtien.firstapp.ultil.NetworkUtil;
 import com.thangtien.firstapp.ultil.WifiManagerClone;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -52,10 +57,14 @@ public class MainActivity extends AppCompatActivity {
     ListView listViewManHinhChinh;
     DrawerLayout drawerLayout;
     ProductTypeAdapter productTypeAdapter;
+    ObjectDataAdapter objectDataAdapter;
     ArrayList<ProductType> listProductType;
+    ArrayList<ObjectData> listObjectData;
     TextView txtSpMoiNhat;
     WifiManagerClone wifiManagerClone;
     String TAG;
+    ProgressDialog mProgressDialog;
+    Disposable mDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +89,56 @@ public class MainActivity extends AppCompatActivity {
         txtSpMoiNhat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_SHOW_APP_INFO);
-                intent.setData(Uri.parse("package:com.thangtien.firstapp.activity"));
-                startActivity(intent);
+//                Intent intent = new Intent(Intent.ACTION_SHOW_APP_INFO);
+//                intent.setData(Uri.parse("package:com.thangtien.firstapp.activity"));
+//                startActivity(intent);
+                mProgressDialog.show();
+                ApiService.apiService.getPosts()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<>() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+                                mDisposable = d;
+                            }
+
+                            @Override
+                            public void onNext(@NonNull List<ObjectData> objectData) {
+                                listObjectData = (ArrayList<ObjectData>) objectData;
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                Log.i(TAG, "call api error");
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Log.i(TAG, "complete call api size:" + listObjectData.size());
+                                if (!listObjectData.isEmpty()) {
+                                    for (ObjectData objectData : listObjectData)
+                                        Log.i(TAG, "objectData: " + objectData.getTitle());
+                                }
+                                mProgressDialog.dismiss();
+                                objectDataAdapter = new ObjectDataAdapter(listObjectData);
+                                DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
+                                dividerItemDecoration.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(getApplicationContext(), R.drawable.item_divider)));
+                                recyclerViewManHinhChinh.addItemDecoration(dividerItemDecoration);
+                                recyclerViewManHinhChinh.setLayoutManager(new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false));
+                                recyclerViewManHinhChinh.setAdapter(objectDataAdapter);
+                            }
+                        });
+
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
     }
 
     private void showWifiListDialog() {
@@ -117,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
     private void actionViewFillper() {
         Log.i(TAG, "actionViewFillper");
         List<String> mangQuangCao = FileUtil.readFromFile(this, Constants.file_name_quang_cao);
-        if (mangQuangCao.size() == 0) return;
+        if (mangQuangCao.isEmpty()) return;
 
         for (String s : mangQuangCao) {
             ImageView imageView = new ImageView(getApplicationContext());
@@ -146,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
     private void actionBar() {
         Log.i(TAG, "actionBar");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDefaultDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,12 +217,9 @@ public class MainActivity extends AppCompatActivity {
         listViewManHinhChinh.setAdapter(productTypeAdapter);
 
         //click ListView
-        listViewManHinhChinh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ProductType productType = listProductType.get(i);
-                FileUtil.toast_short(getApplicationContext(), productType.getImage());
-            }
+        listViewManHinhChinh.setOnItemClickListener((adapterView, view, i, l) -> {
+            ProductType productType = listProductType.get(i);
+            FileUtil.toast_short(getApplicationContext(), productType.getImage());
         });
     }
 
@@ -182,5 +233,7 @@ public class MainActivity extends AppCompatActivity {
         listProductType = new ArrayList<>();
         txtSpMoiNhat = findViewById(R.id.txtSanphammoinhat);
         wifiManagerClone = new WifiManagerClone(this);
+        mProgressDialog = new ProgressDialog(this);
+        listObjectData = new ArrayList<>();
     }
 }

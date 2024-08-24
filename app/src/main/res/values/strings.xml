@@ -5,4 +5,9 @@
     <string name="login">Login</string>
     <string name="forget_password">Forget Password</string>
     <string name="register_new_a_account">Register new a account</string>
+    <string name="title">Title</string>
+    <string name="noi_dung">Nội dung</string>
+    <string name="san_pham_moi_nhat">Sản phẩm mới nhất</string>
+    <string name="images">images</string>
+    <string name="ket_noi">Kết nối</string>
 </resources>

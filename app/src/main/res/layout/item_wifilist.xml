@@ -10,8 +10,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:text="Nội dung"
-        android:textSize="25dp"
+        android:text="@string/noi_dung"
+        android:textSize="25sp"
         android:textStyle="bold"
         android:textColor="#DC1010"
         android:id="@+id/txt_name_wifi" />
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btnKetNoi"
-        android:text="Kết nối"
+        android:text="@string/ket_noi"
         android:background="@color/black" />
 
 </LinearLayout>
