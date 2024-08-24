@@ -38,6 +38,12 @@
                 android:background="#5992d2"
                 android:orientation="vertical">
 
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/customer_dialog_process"
+                    android:id="@+id/btnCustomerDialogProcess"
+                    android:background="@color/cardview_light_background" />
                 <TextView
                     android:id="@+id/txtSanphammoinhat"
                     android:layout_width="wrap_content"
