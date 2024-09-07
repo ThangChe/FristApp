@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     String TAG;
     ProgressDialog mProgressDialog;
     Disposable mDisposable;
-    Button btnCustomerDialogProcess, btnNavigationBar;
+    Button btnCustomerDialogProcess, btnNavigationBar, btnGetVideoFromGallery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         anhXa();
         wifiManagerClone.getAvailableWifiNetworks();
-        FileUtil.getImagesAndVideos(this);
-        FileUtil.getImagesFromInternalStorage(getApplicationContext());
+        //FileUtil.getImagesAndVideos(this);
+        //FileUtil.getImagesFromInternalStorage(getApplicationContext());
         Log.i(TAG, "isNetworkConnected: " + NetworkUtil.isNetworkConnected(this));
         if (!FileUtil.isServiceRunning(this, MemoryCheckService.class)) {
             Intent serviceIntent = new Intent(this, MemoryCheckService.class);
@@ -162,6 +162,10 @@ public class MainActivity extends AppCompatActivity {
 
         btnNavigationBar.setOnClickListener(v -> {
             Intent intent = new Intent(context, NavigationBarActivity.class);
+            startActivity(intent);
+        });
+        btnGetVideoFromGallery.setOnClickListener(v -> {
+            Intent intent = new Intent(context, GetVideoFromGalleryActivity.class);
             startActivity(intent);
         });
     }
@@ -270,5 +274,6 @@ public class MainActivity extends AppCompatActivity {
         listObjectData = new ArrayList<>();
         btnCustomerDialogProcess = findViewById(R.id.btnCustomerDialogProcess);
         btnNavigationBar = findViewById(R.id.btnNavigationBar);
+        btnGetVideoFromGallery = findViewById(R.id.btnGetVideofromgalley);
     }
 }

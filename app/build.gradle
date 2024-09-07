@@ -46,6 +46,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'com.google.firebase:firebase-firestore:25.1.0'
     implementation 'androidx.activity:activity-ktx:1.9.2'
+    implementation 'androidx.activity:activity:1.9.2'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
@@ -74,4 +75,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.squareup.okhttp3:okhttp:3.14.9'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    //Card view
+    implementation "androidx.cardview:cardview:1.0.0"
+    //Ted Permission - Test permission
+    implementation("io.github.ParkSangGwon:tedpermission-normal:3.4.2")
+
+
 }

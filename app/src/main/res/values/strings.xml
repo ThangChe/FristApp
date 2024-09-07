@@ -18,4 +18,5 @@
     <string name="home_fragment">Home Fragment</string>
     <string name="favorite_fragments">Favorite Fragments</string>
     <string name="my_page_fragment">My page fragment</string>
+    <string name="get_video_from_gallery">Get video from Gallery</string>
 </resources>

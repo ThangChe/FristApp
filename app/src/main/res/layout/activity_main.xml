@@ -52,6 +52,14 @@
                     android:text="@string/navigation_bar"
                     android:id="@+id/btnNavigationBar"
                     android:background="@color/cardview_light_background" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:text="@string/get_video_from_gallery"
+                    android:id="@+id/btnGetVideofromgalley"
+                    android:background="@color/cardview_light_background" />
                 <TextView
                     android:id="@+id/txtSanphammoinhat"
                     android:layout_width="wrap_content"

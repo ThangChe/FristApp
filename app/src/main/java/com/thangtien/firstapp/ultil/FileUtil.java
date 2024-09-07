@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.thangtien.firstapp.model.ProductType;
+import com.thangtien.firstapp.model.Video;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -193,4 +194,35 @@ public class FileUtil {
     }
 
 
+    public static List<Video> getAllVideoFromGallery(Context context) {
+        List<Video> list = new ArrayList<>();
+        Uri uri;
+        Cursor cursor;
+        int columnIndextData, thumb;
+
+        String absolutePathOfImage;
+        String thumbnail;
+        uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+
+        String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
+                MediaStore.Video.Media._ID, MediaStore.Video.Thumbnails.DATA};
+
+        final String orderBy = MediaStore.Video.Media.DATE_TAKEN;
+        cursor = context.getContentResolver().query(uri, projection, null, null, orderBy + " DESC");
+
+        assert cursor != null;
+        columnIndextData = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        thumb = cursor.getColumnIndexOrThrow(MediaStore.Video.Thumbnails.DATA);
+        while (cursor.moveToNext()) {
+            absolutePathOfImage = cursor.getString(columnIndextData);
+            thumbnail = cursor.getString(thumb);
+            list.add(new Video(absolutePathOfImage, thumbnail));
+            Log.i(TAG, "absolutePathOfImage: " + absolutePathOfImage);
+            Log.i(TAG, "thumbnail: " + thumbnail);
+        }
+        cursor.close();
+
+        return list;
+
+    }
 }
