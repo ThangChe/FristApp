@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -67,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
     String TAG;
     ProgressDialog mProgressDialog;
     Disposable mDisposable;
-    Button btnCustomerDialogProcess;
-    Handler handler = new Handler();
+    Button btnCustomerDialogProcess, btnNavigationBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,33 +134,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         Context context = this;
-        btnCustomerDialogProcess.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final ProgressDialog progressDialog = new ProgressDialog(context);
-                progressDialog.setTitle("Get data from web....");
-                progressDialog.setMessage("Please wait...");
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                progressDialog.setProgress(0);
-                progressDialog.setMax(100);
-                progressDialog.show();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (progressDialog.getProgress() <= progressDialog.getMax()) {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            progressDialog.setProgress(progressDialog.getProgress() + 2);
-                            if (progressDialog.getProgress() >= progressDialog.getMax()) {
-                                progressDialog.dismiss();
-                            }
+        btnCustomerDialogProcess.setOnClickListener(v -> {
+            final ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog.setTitle("Get data from web....");
+            progressDialog.setMessage("Please wait...");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setProgress(0);
+            progressDialog.setMax(100);
+            progressDialog.show();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (progressDialog.getProgress() <= progressDialog.getMax()) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        progressDialog.setProgress(progressDialog.getProgress() + 2);
+                        if (progressDialog.getProgress() >= progressDialog.getMax()) {
+                            progressDialog.dismiss();
                         }
                     }
-                }).start();
-            }
+                }
+            }).start();
+        });
+
+        btnNavigationBar.setOnClickListener(v -> {
+            Intent intent = new Intent(context, NavigationBarActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -269,5 +269,6 @@ public class MainActivity extends AppCompatActivity {
         mProgressDialog = new ProgressDialog(this);
         listObjectData = new ArrayList<>();
         btnCustomerDialogProcess = findViewById(R.id.btnCustomerDialogProcess);
+        btnNavigationBar = findViewById(R.id.btnNavigationBar);
     }
 }

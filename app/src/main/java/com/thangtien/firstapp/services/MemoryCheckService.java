@@ -1,5 +1,6 @@
 package com.thangtien.firstapp.services;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -60,6 +61,7 @@ public class MemoryCheckService extends Service {
         }
     };
 
+    @SuppressLint("ForegroundServiceType")
     @Override
     public void onCreate() {
         Log.i(TAG, "onCreate");

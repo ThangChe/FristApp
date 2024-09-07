@@ -11,4 +11,11 @@
     <string name="images">images</string>
     <string name="ket_noi">Kết nối</string>
     <string name="customer_dialog_process">Customer Dialog Process</string>
+    <string name="navigation_bar">Navigation Bar</string>
+    <string name="home">Home</string>
+    <string name="favorite">Favorite</string>
+    <string name="my_page">My page</string>
+    <string name="home_fragment">Home Fragment</string>
+    <string name="favorite_fragments">Favorite Fragments</string>
+    <string name="my_page_fragment">My page fragment</string>
 </resources>
